@@ -1,13 +1,15 @@
-Current configuration : 1714 bytes
+Current configuration : 1972 bytes
 !
 version 15.1
 no service timestamps log datetime msec
 no service timestamps debug datetime msec
-no service password-encryption
+service password-encryption
 !
-hostname Router
+hostname R1
 !
 !
+!
+enable secret 5 $1$mERr$hdN.4xel9freLwFNWnnPD1
 !
 !
 ip dhcp excluded-address 192.168.10.1 192.168.10.20
@@ -35,6 +37,8 @@ no ipv6 cef
 !
 !
 !
+username admin secret 5 $1$mERr$hdN.4xel9freLwFNWnnPD1
+!
 !
 license udi pid CISCO2911/K9 sn FTX1524644J-
 !
@@ -46,6 +50,7 @@ license udi pid CISCO2911/K9 sn FTX1524644J-
 !
 !
 !
+ip domain-name lab.local
 !
 !
 spanning-tree mode pvst
@@ -100,18 +105,23 @@ ip flow-export version 9
 !
 access-list 110 deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
 access-list 110 permit ip any any
+access-list 110 remark Block HR access to Finance VLAN
 !
+banner motd ^CAPENAS ACESSO AUTORIZADO^C
 !
 !
 !
 !
 line con 0
+ login local
 !
 line aux 0
 !
 line vty 0 4
- login
+ login local
+ transport input ssh
 !
 !
 !
 end
+
